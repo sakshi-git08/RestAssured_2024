@@ -3,6 +3,7 @@ package Basic;
 import Payload.Payloads;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.equalTo;
@@ -29,13 +30,23 @@ public class Basics {
         // present in response or not
 
         //update Place
+        String newAddress = "Summer Wak, Africa";
         given().log().all().queryParam("key","qaclick123").header("Content-Type","application/json")
                 .body("{\n" +
                         "\"place_id\":\"" + placeId +"\",\n" +
-                        "\"address\":\"70 winter walk, USA\",\n" +
+                        "\"address\":\"" + newAddress +"\",\n" +
                         "\"key\":\"qaclick123\"\n" +
                         "}").when().put("/maps/api/place/update/json").then().log().all()
                 .assertThat().statusCode(200).body("msg", equalTo("Address successfully updated"));
+
+        //Get place
+        String getPlaceResponse = given().log().all().queryParam("key","qaclick123").queryParam("place_id", placeId)
+                .header("Content-Type","application/json")
+                .when().get("maps/api/place/get/json").then().log().all().assertThat().statusCode(200).extract().response().asString();
+        JsonPath js = new JsonPath(getPlaceResponse);
+        String actualAddress = js.getString("address");
+        Assert.assertEquals(actualAddress, newAddress);
+
 
     }
 
