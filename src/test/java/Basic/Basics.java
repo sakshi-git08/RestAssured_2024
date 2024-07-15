@@ -24,8 +24,21 @@ public class Basics {
         JsonPath json = new JsonPath(response);
         String placeId = json.get("place_id");
         System.out.println(placeId);
+
+        //Add Place -> Update Place with New Address -> Get Place to validate if New Address is
+        // present in response or not
+
+        //update Place
+        given().log().all().queryParam("key","qaclick123").header("Content-Type","application/json")
+                .body("{\n" +
+                        "\"place_id\":\"" + placeId +"\",\n" +
+                        "\"address\":\"70 winter walk, USA\",\n" +
+                        "\"key\":\"qaclick123\"\n" +
+                        "}").when().put("/maps/api/place/update/json").then().log().all()
+                .assertThat().statusCode(200).body("msg", equalTo("Address successfully updated"));
+
     }
-    //Add Place -> Update Place with New Address -> Get Place to validate if New Address is
-    // present in response or not
+
+
 
 }
