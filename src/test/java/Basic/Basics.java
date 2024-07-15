@@ -1,6 +1,7 @@
 package Basic;
 
-import Payload.Payloads;
+import ExtraStuff.Payloads;
+import ExtraStuff.ReUsableMethods;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import org.testng.Assert;
@@ -22,7 +23,7 @@ public class Basics {
                 .header("server", "Apache/2.4.52 (Ubuntu)").extract().response().asString();
 
         System.out.println(response);
-        JsonPath json = new JsonPath(response);
+        JsonPath json = ReUsableMethods.rawToJson(response);
         String placeId = json.get("place_id");
         System.out.println(placeId);
 
@@ -43,7 +44,7 @@ public class Basics {
         String getPlaceResponse = given().log().all().queryParam("key","qaclick123").queryParam("place_id", placeId)
                 .header("Content-Type","application/json")
                 .when().get("maps/api/place/get/json").then().log().all().assertThat().statusCode(200).extract().response().asString();
-        JsonPath js = new JsonPath(getPlaceResponse);
+        JsonPath js = ReUsableMethods.rawToJson(response);
         String actualAddress = js.getString("address");
         Assert.assertEquals(actualAddress, newAddress);
 
