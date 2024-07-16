@@ -9,7 +9,7 @@ import org.testng.Assert;
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.equalTo;
 
-public class Basics {
+public class GooglePlaceAPIs {
     public static void main(String[] args) {
         //validate if Add Place API is working as expected.
 
