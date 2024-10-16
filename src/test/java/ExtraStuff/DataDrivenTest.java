@@ -6,15 +6,13 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class DataDrivenTest {
-    //Identify the test case column by scanning the entire first row
-    //once column is identified then scan entire test cases column to identify purchase Test case row
-    //after you grab purchase test case row pull all the data of that row and feed into test case
-    public static void main(String[] args) throws IOException {
+    public ArrayList<String> getData(String testcaseName) throws IOException {
+        ArrayList<String> a = new ArrayList<>();
         //fileInput
         FileInputStream fis = new FileInputStream("C:\\Users\\DELL\\OneDrive\\DemoData.xlsx");
         XSSFWorkbook workbook = new XSSFWorkbook(fis);
@@ -41,15 +39,24 @@ public class DataDrivenTest {
                 //once column is identified then scan entire test cases column to identify purchase Test case row
                 while (rows.hasNext()) {
                     Row r = rows.next();
-                    if (r.getCell(column).getStringCellValue().equalsIgnoreCase("Purchase")) {
+                    if (r.getCell(column).getStringCellValue().equalsIgnoreCase(testcaseName)) {
                         //after you grab purchase test case row pull all the data of that row and feed into test case
                         Iterator<Cell> cv = r.cellIterator();
                         while (cv.hasNext()) {
-                            System.out.println(cv.next().getStringCellValue());
+                            a.add(cv.next().getStringCellValue());
                         }
                     }
                 }
             }
         }
+        return a;
     }
+
+    //Identify the test case column by scanning the entire first row
+    //once column is identified then scan entire test cases column to identify purchase Test case row
+    //after you grab purchase test case row pull all the data of that row and feed into test case
+    public static void main(String[] args) throws IOException {
+
+    }
+
 }
