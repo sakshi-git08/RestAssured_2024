@@ -1,10 +1,13 @@
 package ExtraStuff;
 
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.util.NumberToTextConverter;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import javax.imageio.stream.ImageInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -43,20 +46,25 @@ public class DataDrivenTest {
                         //after you grab purchase test case row pull all the data of that row and feed into test case
                         Iterator<Cell> cv = r.cellIterator();
                         while (cv.hasNext()) {
-                            a.add(cv.next().getStringCellValue());
+                            Cell c = cv.next();
+                            if (c.getCellType() == CellType.STRING) {
+                                a.add(c.getStringCellValue());
+                            } else {
+                                a.add(NumberToTextConverter.toText(c.getNumericCellValue()));
+                            }
                         }
                     }
                 }
             }
+
         }
         return a;
     }
-
-    //Identify the test case column by scanning the entire first row
-    //once column is identified then scan entire test cases column to identify purchase Test case row
-    //after you grab purchase test case row pull all the data of that row and feed into test case
-    public static void main(String[] args) throws IOException {
-
-    }
-
 }
+
+//Identify the test case column by scanning the entire first row
+//once column is identified then scan entire test cases column to identify purchase Test case row
+//after you grab purchase test case row pull all the data of that row and feed into test case
+
+
+
