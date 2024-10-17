@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class DataDrivenTest {
-    public ArrayList<String> getData(String testcaseName) throws IOException {
+    public ArrayList<String> getData(String testcaseName, String sheetName) throws IOException {
         ArrayList<String> a = new ArrayList<>();
         //fileInput
         FileInputStream fis = new FileInputStream("C:\\Users\\DELL\\OneDrive\\DemoData.xlsx");
@@ -22,7 +22,7 @@ public class DataDrivenTest {
         int sheets = workbook.getNumberOfSheets();
         //navigating to exact sheet.
         for (int i = 0; i < sheets; i++) {
-            if (workbook.getSheetName(i).equalsIgnoreCase("testdata")) {
+            if (workbook.getSheetName(i).equalsIgnoreCase(sheetName)) {
                 XSSFSheet sheet = workbook.getSheetAt(i);
                 //Identify the test case column by scanning the entire first row
                 Iterator<Row> rows = sheet.iterator(); //sheet is a collection of rows

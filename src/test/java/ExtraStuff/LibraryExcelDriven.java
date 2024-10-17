@@ -5,6 +5,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,12 +15,15 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class LibraryExcelDriven {
     @Test
-    public void addBook() {
+    public void addBook() throws IOException {
+        DataDrivenTest d = new DataDrivenTest();
+        ArrayList data = d.getData("AddBook", "RestAssured");
         Map<String, Object> jsonAsMap = new HashMap<>();
-        jsonAsMap.put("name", "Selenium Intro");
-        jsonAsMap.put("isbn", "Selenium");
-        jsonAsMap.put("aisle", "02");
-        jsonAsMap.put("author", "Sakshi");
+        //0 is your testcase name you can't use that
+        jsonAsMap.put("name", data.get(1));
+        jsonAsMap.put("isbn", data.get(2));
+        jsonAsMap.put("aisle", data.get(3));
+        jsonAsMap.put("author", data.get(4));
         RestAssured.baseURI = "https://rahulshettyacademy.com";
         String response = given().header("Content-Type", "application/json")
                 .body(jsonAsMap)
